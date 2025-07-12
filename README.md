@@ -44,5 +44,5 @@ Spring Boot ile geliştirilen bir bilet satış uygulamasıdır. Kullanıcılar 
 
 1. Projeyi klonlayın:
    ```bash
-   git clone https://github.com/kullaniciadi/biletapp.git
+   git clone https://github.com/JrCiko/BiletApp-Final-Project.git
    cd biletapp
