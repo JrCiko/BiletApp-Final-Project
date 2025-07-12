@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Paneli | BiletApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+    <h2>Admin Paneli</h2>
+    <a href="/admin/etkinlik/yeni" class="btn btn-success mb-3">Yeni Etkinlik Ekle</a>
+    <a href="/admin/raporlar" class="btn btn-success mb-3">Bilet Raporları</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Ad</th>
+                <th>Konum</th>
+                <th>Tarih</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="etkinlik : ${etkinlikler}">
+                <td th:text="${etkinlik.ad}">Etkinlik Adı</td>
+                <td th:text="${etkinlik.konum}">Konum</td>
+                <td th:text="${etkinlik.tarih}">Tarih</td>
+                <td>
+                    <a th:href="@{'/admin/duzenle/' + ${etkinlik.id}}" class="btn btn-warning btn-sm">Düzenle</a>
+                    <a th:href="@{'/admin/sil/' + ${etkinlik.id}}"
+                    onclick="return confirm('Silmek istediğinize emin misiniz?');" class="btn btn-danger btn-sm">Sil</a>
+                </td>
+                <td><a th:href="@{'/admin/etkinlik/' + ${etkinlik.id} + '/katilimcilar'}">Katılımcıları Gör</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

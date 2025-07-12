@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Bilet Al | BiletApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Ana İçerik -->
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 th:text="'Bilet Al - ' + ${etkinlik.ad}">Etkinlik Adı</h4>
+        </div>
+        <div class="card-body">
+
+            <p><strong>Tarih:</strong> <span th:text="${etkinlik.tarih}"></span></p>
+            <p><strong>Konum:</strong> <span th:text="${etkinlik.konum}"></span></p>
+            <span th:text="${etkinlik.tur.getLabel()}"></span>
+
+            <form th:action="@{/bilet-al}" method="post">
+                <input type="hidden" name="etkinlikId" th:value="${etkinlik.id}" />
+                <div class="mb-3">
+                    <label for="biletTipi" class="form-label">Bilet Tipi:</label>
+                    <select class="form-select" id="biletTipi" name="biletTipi" required>
+                        <option value="STANDART">Standart - 100₺</option>
+                        <option value="OGRENCI">Öğrenci - 50₺</option>
+                        <option value="VIP">VIP - 200₺</option>
+                    </select>
+                </div>
+                <div class="seat-grid">
+                    <div th:each="koltuk : ${koltuklar}">
+                        <button type="button"
+                                class="seat"
+                                th:classappend="${koltuk.rezerve} ? ' occupied' : ''"
+                                th:attr="data-id=${koltuk.id}"
+                                th:onclick="'toggleSeat(this)'">
+                            <span class="seat-label" th:text="'S' + ${koltuk.siraNo} + 'K' + ${koltuk.koltukNo}"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="selectedSeatsContainer"></div>
+
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-success">Satın Al</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+        © 2025 BiletApp - Tüm hakları saklıdır.
+    </div>
+</footer>
+<script>
+    const selectedSeats = new Set();
+
+    function toggleSeat(button) {
+        if (button.classList.contains('occupied')) return;
+
+        const seatId = button.dataset.id;
+        if (selectedSeats.has(seatId)) {
+            selectedSeats.delete(seatId);
+            button.classList.remove('selected');
+        } else {
+            selectedSeats.add(seatId);
+            button.classList.add('selected');
+        }
+
+        updateSelectedInputs();
+    }
+
+    function updateSelectedInputs() {
+        const container = document.getElementById('selectedSeatsContainer');
+        container.innerHTML = '';
+        selectedSeats.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'koltukIds'; // Controller'da List<Long> koltukIds olarak al
+            input.value = id;
+            container.appendChild(input);
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    .seat-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 8px;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .seat {
+        width: 100%;
+        padding-top: 100%;
+        position: relative;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #e0e0e0;
+        transition: background-color 0.3s;
+    }
+
+    .seat.selected {
+        background-color: #4caf50;
+    }
+
+    .seat.occupied {
+        background-color: #b0bec5;
+        cursor: not-allowed;
+    }
+
+    .seat-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+</style>
+
+</body>
+</html>

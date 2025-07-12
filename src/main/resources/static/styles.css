@@ -1,0 +1,15 @@
+/* Özel Stiller */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-primary {
+    background-color: #3f51b5 !important;
+}

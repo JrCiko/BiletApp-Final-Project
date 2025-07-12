@@ -1,0 +1,44 @@
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" th:href="@{/}">BiletApp</a>
+            <div class="d-flex">
+                <!-- Konuma göre filtreleme -->
+                <form method="get" th:action="@{/}" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select name="konum" class="form-select">
+                                <option value="">Tüm Konumlar</option>
+                                <option th:each="k : ${konumlar}" 
+                                        th:value="${k}" 
+                                        th:text="${k}" 
+                                        th:selected="${k == secilenKonum}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary">Filtrele</button>
+                        </div>
+                    </div>
+                </form>
+                <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a href="/admin" class="btn btn-warning ms-2">Admin Paneli</a>
+                </div>
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a href="/kullanici/profil" class="btn btn-warning ms-2">Profilim</a>
+                </div>
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <span>Merhaba, <span th:text="${#authentication.name}"></span></span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Çıkış Yap</button>
+                </form>
+                </div>
+                <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <a th:href="@{/login}">Giriş Yap</a>
+                    <a th:href="@{/register}">Kayıt Ol</a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bilet Detayları</title>
+    <meta charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4>Bilet Detayları</h4>
+        </div>
+        <div th:if="${mesaj}" class="alert alert-success" th:text="${mesaj}"></div>
+        <div class="card-body">
+            <h5 th:text="'Etkinlik: ' + ${etkinlik.ad}"></h5>
+            <p><strong>Tarih:</strong> <span th:text="${etkinlik.tarih}"></span></p>
+            <p><strong>Konum:</strong> <span th:text="${etkinlik.konum}"></span></p>
+            <p><strong>Bilet Alım Tarihi:</strong> <span th:text="${bilet.satinAlmaTarihi}"></span></p>
+            <p><strong>Fiyat:</strong> <span th:text="${bilet.fiyat} + ' TL'"></span></p>
+
+            <div th:if="${koltuklar != null and !koltuklar.isEmpty()}">
+                <h6>Seçilen Koltuklar:</h6>
+                <ul>
+                    <li th:each="koltuk : ${koltuklar}" 
+                        th:text="'Sıra: ' + ${koltuk.siraNo} + ', Koltuk: ' + ${koltuk.koltukNo}">Koltuk Bilgisi</li>
+                </ul>
+            </div>
+            <div th:if="${koltuklar == null or koltuklar.isEmpty()}">
+                <p><em>Bu etkinlik için koltuk seçimi yapılmamış.</em></p>
+            </div>
+
+            <a href="/benim-biletlerim" class="btn btn-secondary mt-3">Geri Dön</a>
+            <form th:action="@{'/bilet-iptal/' + ${bilet.id}}" method="post" onsubmit="return confirm('Bileti iptal etmek istediğinize emin misiniz?');">
+                <button type="submit" class="btn btn-danger mt-3">Bileti İptal Et</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
