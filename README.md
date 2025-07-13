@@ -40,13 +40,15 @@ Spring Boot ile geliştirilen bir bilet satış uygulamasıdır. Kullanıcılar 
 
 ---
 
+## Database
+
+Projeye ait PostgreSQL yedeği `BiletAppDb_Backup.sql` adıyla yer almaktadır. `pgAdmin` veya `psql` ile içe aktarabilirsiniz.
+
+---
+
 ## 🔧 Kurulum
 
 1. Projeyi klonlayın:
    ```bash
    git clone https://github.com/JrCiko/BiletApp-Final-Project.git
    cd biletapp
-   
-## Database
-
-Projeye ait PostgreSQL yedeği `BiletAppDb_Backup.sql` adıyla yer almaktadır. `pgAdmin` veya `psql` ile içe aktarabilirsiniz.
